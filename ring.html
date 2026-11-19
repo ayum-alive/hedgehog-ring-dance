@@ -1,0 +1,18 @@
+<!doctype html><meta charset=utf-8><title>Hedgehog ring dance</title>
+<body style="margin:0;background:#2b2a33;color:#ddd;font-family:sans-serif;text-align:center">
+<p>Click the lid to add a dancer (up to 24). Click the middle to reverse.</p>
+<canvas id=c width=400 height=400></canvas>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');let n=8,dir=1,t=0;
+c.onclick=e=>{const r=c.getBoundingClientRect(),dx=e.clientX-r.left-200,dy=e.clientY-r.top-200;
+ if(Math.hypot(dx,dy)<50)dir=-dir;else n=Math.min(24,n+1)};
+function hog(px,py,a,b){x.save();x.translate(px,py);x.rotate(a+Math.PI/2);
+ x.fillStyle='#6b4a2a';x.beginPath();x.ellipse(0,0,20,14,0,0,7);x.fill();
+ x.strokeStyle='#3a2a18';for(let k=-4;k<=4;k++){x.beginPath();x.moveTo(k*4,-11);x.lineTo(k*4+k+Math.sin(b+k)*2,-22);x.stroke()}
+ x.fillStyle='#e8c9a0';x.beginPath();x.ellipse(0,13,8,7,0,0,7);x.fill();
+ x.fillStyle='#000';x.fillRect(-4,12,2,2);x.fillRect(2,12,2,2);x.restore()}
+function f(){t+=.01*dir;x.fillStyle='#2b2a33';x.fillRect(0,0,400,400);
+ x.fillStyle='#4a4a3a';x.strokeStyle='#8a6a3a';x.lineWidth=8;x.beginPath();x.arc(200,200,190,0,7);x.fill();x.stroke();x.lineWidth=1;
+ for(let i=0;i<n;i++){const a=t+i*2*Math.PI/n,R=n>12?(i%2?130:90):110;hog(200+R*Math.cos(a),200+R*Math.sin(a),a,t*8+i)}
+ requestAnimationFrame(f)}f();
+</script>
